@@ -40,6 +40,16 @@ class RunTests(Command):
             suite.addTest(unittest.TestLoader().loadTestsFromModule(mod))
         unittest.TextTestRunner(verbosity=2).run(suite)
 
+class PyTest(Command):
+    user_options = []
+    def initialize_options(self):
+        pass
+    def finalize_options(self):
+        pass
+    def run(self):
+        import sys,subprocess
+        errno = subprocess.call([sys.executable, 'runpytests.py', 'test2'])
+        raise SystemExit(errno)
 
 def read(fname):
     inf = open(os.path.join(os.path.dirname(__file__), fname))
@@ -53,7 +63,7 @@ setup(name='appdirs',
     description='A small Python module for determining appropriate " + \
         "platform-specific dirs, e.g. a "user data dir".',
     long_description=read('README.rst') + '\n' + read('CHANGES.rst'),
-    cmdclass={'test': RunTests},
+    cmdclass={'test': RunTests, 'pytest': PyTest},
     classifiers=[c.strip() for c in """
         Development Status :: 4 - Beta
         Intended Audience :: Developers
