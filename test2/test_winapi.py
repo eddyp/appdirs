@@ -4,14 +4,6 @@ if __name__ != "__main__":
     sys.path.append('.')
     import appdirs
 
-class _winregmock:
-    def OpenKey(key, subkey, res=None, sam=None):
-        pass
-    def QueryValueEx(key,  valuename):
-        pass
-
-mocks = {'_winreg':_winregmock}
-
 def helper_patchpair(monkey, modname, apiname, retval):
     def mockreturn(a=None, b=None, c=None, d=None, e=None):
         return retval
