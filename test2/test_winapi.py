@@ -8,6 +8,21 @@ def helper_patchpair(monkey, modname, apiname, retval):
         return retval
     monkey.setattr(modname, apiname, mockreturn)
 
+def forget_modules(modules, backup):
+    for m in modules:
+        try:
+            backup[m] = sys.modules[m]
+        except KeyError:
+            backup[m] = None
+        sys.modules[m] = None
+
+def restore_modules(backup):
+    for m in backup.keys():
+        sys.modules[m] = backup[m]
+        if backup[m] == None:
+            del sys.modules[m]
+        del backup[m]
+
 #@pytest.mark.parametrize(
         #("platform", "patchpairs", "mockpairs", "roaming", "envvar"), 
             #(   "win32",
