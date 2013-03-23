@@ -38,6 +38,32 @@ def test_config_dir(monkeypatch, mod, attr, ret):
 
 
 
+def test_user_data_dir_registry(monkeypatch):
+    origmodlist = {}
+
+    mp = monkeypatch
+    import sys
+    mp.setattr(sys, 'platform', 'win32')
+    assert sys.platform == 'win32'
+    forget_modules(['win32com', 'ctypes'], origmodlist)
+
+    sys.path.insert(0, 'test2/mocks')
+    import _winreg
+    fakekey = 'fake\\_winreg\\key'
+    fakedir = 'c:\\fake\\sh\\dir'
+    helper_patchpair(mp, _winreg, 'OpenKey', fakekey)
+    helper_patchpair(mp, _winreg, 'QueryValueEx', fakedir)
+
+    import os
+    helper_patchpair(mp, os, 'pathsep', '\\')
+
+    import appdirs
+    assert appdirs.user_data_dir('MyApp', 'MyCompany') == \
+                fakedir + "\\MyCompany\\MyApp"
+
+    restore_modules(origmodlist)
+
+
 if __name__=="__main__":
     pytest.main([ __file__ ])
     import appdirs
