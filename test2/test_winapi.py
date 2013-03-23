@@ -2,7 +2,6 @@ import pytest
 if __name__ != "__main__":
     import sys
     sys.path.append('.')
-    import appdirs
 
 def helper_patchpair(monkey, modname, apiname, retval):
     def mockreturn(a=None, b=None, c=None, d=None, e=None):
