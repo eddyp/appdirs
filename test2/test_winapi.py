@@ -23,20 +23,6 @@ def restore_modules(backup):
             del sys.modules[m]
         del backup[m]
 
-#@pytest.mark.parametrize(
-        #("platform", "patchpairs", "mockpairs", "roaming", "envvar"), 
-            #(   "win32",
-                #{ '_winreg':
-                    #{ 'OpenKey': 'fake\\_winreg\\key',
-                      #'QueryValueEx': 'c:\\fake\\shell\\folder'
-                    #},
-                  #'win32com':None, 
-                  #'ctypes':None
-                #}, 
-                #False,
-                #{}
-            #)
-        #)
 @pytest.mark.parametrize(
             ("mod", "attr", "ret"),
             [ ("sys", "platform", "win32"),
@@ -49,6 +35,8 @@ def test_config_dir(monkeypatch, mod, attr, ret):
     modobj = sys.modules[mod]
     helper_patchpair(monkeypatch, modobj, attr, ret)
     assert sys.platform() == ret
+
+
 
 if __name__=="__main__":
     pytest.main([ __file__ ])
