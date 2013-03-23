@@ -23,18 +23,18 @@ def restore_modules(backup):
             del sys.modules[m]
         del backup[m]
 
-@pytest.mark.parametrize(
-            ("mod", "attr", "ret"),
-            [ ("sys", "platform", "win32"),
-              ("sys", "platform", "Linux2"),
-              ("sys", "platform", "darwin")
-            ]
-        )
-def test_config_dir(monkeypatch, mod, attr, ret):
-    import sys
-    modobj = sys.modules[mod]
-    patchapi(monkeypatch, modobj, attr, ret)
-    assert sys.platform() == ret
+#@pytest.mark.parametrize(
+            #("mod", "attr", "ret"),
+            #[ ("sys", "platform", "win32"),
+              #("sys", "platform", "Linux2"),
+              #("sys", "platform", "darwin")
+            #]
+        #)
+#def test_config_dir(monkeypatch, mod, attr, ret):
+    #import sys
+    #modobj = sys.modules[mod]
+    #patchapi(monkeypatch, modobj, attr, ret)
+    #assert sys.platform() == ret
 
 
 
