@@ -3,7 +3,7 @@ if __name__ != "__main__":
     import sys
     sys.path.append('.')
 
-def helper_patchpair(monkey, modname, apiname, retval):
+def patchapi(monkey, modname, apiname, retval):
     def mockreturn(a=None, b=None, c=None, d=None, e=None):
         return retval
     monkey.setattr(modname, apiname, mockreturn)
@@ -33,7 +33,7 @@ def restore_modules(backup):
 def test_config_dir(monkeypatch, mod, attr, ret):
     import sys
     modobj = sys.modules[mod]
-    helper_patchpair(monkeypatch, modobj, attr, ret)
+    patchapi(monkeypatch, modobj, attr, ret)
     assert sys.platform() == ret
 
 
@@ -51,11 +51,11 @@ def test_user_data_dir_registry(monkeypatch):
     import _winreg
     fakekey = 'fake\\_winreg\\key'
     fakedir = 'c:\\fake\\sh\\dir'
-    helper_patchpair(mp, _winreg, 'OpenKey', fakekey)
-    helper_patchpair(mp, _winreg, 'QueryValueEx', fakedir)
+    patchapi(mp, _winreg, 'OpenKey', fakekey)
+    patchapi(mp, _winreg, 'QueryValueEx', fakedir)
 
     import os
-    helper_patchpair(mp, os, 'pathsep', '\\')
+    patchapi(mp, os, 'pathsep', '\\')
 
     import appdirs
     assert appdirs.user_data_dir('MyApp', 'MyCompany') == \
