@@ -22,6 +22,7 @@ def test_helpers():
 
 def test_dirs():
     dirs = appdirs.AppDirs('MyApp', 'MyCompany', version='1.0')
+    assert type(dirs) != type ('')
     helper_type_test(dirs)
 
 if __name__=="__main__":
